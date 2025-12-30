@@ -2,6 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, FlatList, Text, TextInput, View, StyleSheet, Pressable } from "react-native";
 import { fetchPosts, searchPosts } from "../../api/posts";
 import type { Post } from "../../types/post";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { RootStackParamList } from "../../navigation/RootStack";
 
 function snippet(text: string, max = 120) {
   if (!text) return "";
@@ -18,6 +21,8 @@ export function PostsListScreen() {
 
   const [search, setSearch] = useState("");
   const isSearching = useMemo(() => search.trim().length > 0, [search]);
+
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   async function loadInitial() {
     setLoading(true);
@@ -100,7 +105,7 @@ export function PostsListScreen() {
         onEndReachedThreshold={0.4}
         ListFooterComponent={loadingMore ? <ActivityIndicator style={{ marginVertical: 12 }} /> : null}
         renderItem={({ item }) => (
-          <Pressable style={styles.card} onPress={() => { }}>
+          <Pressable style={styles.card} onPress={() => navigation.navigate("PostDetail", { postId: item.id })}>
             <Text style={styles.cardTitle}>{item.titulo}</Text>
             <Text style={styles.cardMeta}>
               {item.autor} • {item.disciplina}{item.turma ? ` • ${item.turma}` : ""}
