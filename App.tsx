@@ -1,5 +1,11 @@
-import { RootStack } from "./src/navigation/RootStack";
+import React from "react";
+import { AuthProvider } from "./src/auth/AuthContext";
+import { RootNavigator } from "./src/navigation/RootNavigator";
 
 export default function App() {
-  return <RootStack />;
+  return (
+    <AuthProvider>
+      <RootNavigator />
+    </AuthProvider>
+  );
 }
