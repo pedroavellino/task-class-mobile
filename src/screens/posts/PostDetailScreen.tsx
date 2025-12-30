@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from "react-native";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import { fetchPostById } from "../../api/posts";
-import type { Post } from "../../types/post";
 import type { RootStackParamList } from "../../navigation/RootStack";
+import type { Post } from "../../types/post";
+import { fetchPostById } from "../../api/posts";
 
 type RouteProps = RouteProp<RootStackParamList, "PostDetail">;
 
 export function PostDetailScreen() {
-  const { params } = useRoute<RouteProps>();
-  const { postId } = params;
+  const route = useRoute<RouteProps>();
+  const postId = route.params?.postId;
+  if (!postId) 
+    return (
+      <View>
+        <Text>Post inválido</Text>
+      </View>
+    ) 
 
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
@@ -45,8 +51,7 @@ export function PostDetailScreen() {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>{post.titulo}</Text>
       <Text style={styles.meta}>
-        {post.autor} • {post.disciplina}
-        {post.turma ? ` • ${post.turma}` : ""}
+        {post.autor} • {post.disciplina} • {post.turma}
       </Text>
       <Text style={styles.content}>{post.conteudo}</Text>
     </ScrollView>
