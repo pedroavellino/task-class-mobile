@@ -5,6 +5,9 @@ import type { Post } from "../../types/post";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "../../navigation/RootStack";
+import { useLayoutEffect } from "react";
+import { Button } from "react-native";
+import { useAuth } from "../../auth/AuthContext";
 
 function snippet(text: string, max = 120) {
   if (!text) return "";
@@ -23,6 +26,17 @@ export function PostsListScreen() {
   const isSearching = useMemo(() => search.trim().length > 0, [search]);
 
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  const { role } = useAuth();
+
+  useLayoutEffect(() => {
+  navigation.setOptions({
+    headerRight: () =>
+      role === "admin" ? (
+        <Button title="+" onPress={() => navigation.navigate("CreatePost")} />
+      ) : null,
+  });
+}, [navigation, role]);
 
   async function loadInitial() {
     setLoading(true);

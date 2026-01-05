@@ -6,6 +6,7 @@ import { PostDetailScreen } from "../screens/posts/PostDetailScreen";
 export type RootStackParamList = {
   PostsList: undefined;
   PostDetail: { postId: string };
+  CreatePost: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

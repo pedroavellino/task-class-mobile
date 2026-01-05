@@ -11,6 +11,14 @@ type ApiPost = {
   createdAt?: string;
 };
 
+type CreatePostInput = {
+  titulo: string;
+  conteudo: string;
+  autor: string;
+  disciplina?: string;
+  turma?: string;
+};
+
 function toPost(p: ApiPost): Post {
   return {
     id: p._id,
@@ -35,5 +43,10 @@ export async function searchPosts(search: string): Promise<Post[]> {
 
 export async function fetchPostById(postId: string): Promise<Post> {
   const { data } = await http.get<ApiPost>(`/posts/${postId}`);
+  return toPost(data);
+}
+
+export async function createPost(input: CreatePostInput): Promise<Post> {
+  const { data } = await http.post<ApiPost>("/posts", input);
   return toPost(data);
 }
