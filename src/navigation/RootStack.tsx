@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { PostsListScreen } from "../screens/posts/PostListScreen";
 import { PostDetailScreen } from "../screens/posts/PostDetailScreen";
+import { CreatePostScreen } from "../screens/posts/CreatePostScreen";
 
 export type RootStackParamList = {
   PostsList: undefined;
@@ -24,6 +25,11 @@ export function RootStack() {
           name="PostDetail"
           component={PostDetailScreen}
           options={{ title: "Post" }}
+        />
+        <Stack.Screen
+          name="CreatePost"
+          component={CreatePostScreen}
+          options={{ title: "Criar Post" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

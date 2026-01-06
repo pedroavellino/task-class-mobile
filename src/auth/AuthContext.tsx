@@ -25,7 +25,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   async function signIn(input: SignInInput) {
     // ✅ Por enquanto, o app assume que o backend tem /auth/login retornando { access_token, role }
     // Depois, se seu backend ainda não tiver isso, a gente implementa nele.
-    const res = await fetch("http://SEU_IP_LOCAL:3000/auth/login", {
+    const res = await fetch("http://localhost:3000/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(input),
