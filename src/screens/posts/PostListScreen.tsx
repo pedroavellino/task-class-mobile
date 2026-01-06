@@ -4,7 +4,7 @@ import { fetchPosts, searchPosts } from "../../api/posts";
 import type { Post } from "../../types/post";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import type { RootStackParamList } from "../../navigation/RootStack";
+import type { AppStackParamList } from "../../navigation/RootNavigator";
 import { useLayoutEffect } from "react";
 import { Button } from "react-native";
 import { useAuth } from "../../auth/AuthContext";
@@ -26,7 +26,7 @@ export function PostsListScreen() {
   const [search, setSearch] = useState("");
   const isSearching = useMemo(() => search.trim().length > 0, [search]);
 
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>();
 
   const { role } = useAuth();
 
