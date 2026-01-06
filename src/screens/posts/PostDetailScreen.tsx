@@ -93,11 +93,7 @@ export function PostDetailScreen() {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>{post.titulo}</Text>
 
-      <Text style={styles.meta}>
-        {post.autor}
-        {post.disciplina ? ` • ${post.disciplina}` : ""}
-        {post.turma ? ` • ${post.turma}` : ""}
-      </Text>
+      <Text style={styles.meta}>{post.autor}</Text>
 
       <Text style={styles.content}>{post.conteudo}</Text>
 

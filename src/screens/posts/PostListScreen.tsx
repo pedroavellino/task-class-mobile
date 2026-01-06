@@ -53,7 +53,7 @@ export function PostsListScreen() {
   useFocusEffect(
   React.useCallback(() => {
     loadInitial();
-  }, [search])
+  }, [])
 );
 
   async function loadMore() {
@@ -126,9 +126,7 @@ export function PostsListScreen() {
         renderItem={({ item }) => (
           <Pressable style={styles.card} onPress={() => navigation.navigate("PostDetail", { postId: item.id })}>
             <Text style={styles.cardTitle}>{item.titulo}</Text>
-            <Text style={styles.cardMeta}>
-              {item.autor} • {item.disciplina}{item.turma ? ` • ${item.turma}` : ""}
-            </Text>
+            <Text style={styles.cardMeta}>{item.autor}</Text>
             <Text style={styles.cardBody}>{snippet(item.conteudo)}</Text>
           </Pressable>
         )}

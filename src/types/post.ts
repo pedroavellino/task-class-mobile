@@ -1,9 +1,11 @@
 export type Post = {
   id: string;
-  disciplina: string;
-  turma: string;
   titulo: string;
-  conteudo: string;
   autor: string;
+  conteudo: string;
   createdAt?: string;
+
+  // Mantemos opcionais porque o backend ainda pode enviar
+  disciplina?: string;
+  turma?: string;
 };

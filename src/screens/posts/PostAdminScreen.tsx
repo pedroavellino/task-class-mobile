@@ -106,11 +106,7 @@ export function PostsAdminScreen() {
           <View style={styles.card}>
             <Pressable onPress={() => navigation.navigate("PostDetail", { postId: item.id })}>
               <Text style={styles.cardTitle}>{item.titulo}</Text>
-              <Text style={styles.cardMeta}>
-                {item.autor}
-                {item.disciplina ? ` • ${item.disciplina}` : ""}
-                {item.turma ? ` • ${item.turma}` : ""}
-              </Text>
+              <Text style={styles.cardMeta}>{item.autor}</Text>
             </Pressable>
 
             <View style={styles.actionsRow}>

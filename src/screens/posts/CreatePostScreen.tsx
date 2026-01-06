@@ -5,17 +5,14 @@ import { useAuth } from "../../auth/AuthContext";
 import { useNavigation } from "@react-navigation/native";
 
 export function CreatePostScreen() {
-  const { role } = useAuth(); // precisa existir no seu AuthContext
+  const { role } = useAuth();
   const navigation = useNavigation();
 
   const [titulo, setTitulo] = useState("");
   const [conteudo, setConteudo] = useState("");
   const [autor, setAutor] = useState("");
-  const [disciplina, setDisciplina] = useState("");
-  const [turma, setTurma] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Bloqueio simples no MOBILE (além do bloqueio no backend)
   if (role !== "admin") {
     return (
       <View style={styles.container}>
@@ -37,12 +34,9 @@ export function CreatePostScreen() {
         titulo: titulo.trim(),
         conteudo: conteudo.trim(),
         autor: autor.trim(),
-        disciplina: disciplina.trim() || undefined,
-        turma: turma.trim() || undefined,
       });
 
       Alert.alert("Sucesso", "Post criado!");
-      // volta pra lista (ou detalhe, depois a gente melhora)
       // @ts-ignore
       navigation.goBack();
     } catch (e) {
@@ -65,8 +59,6 @@ export function CreatePostScreen() {
         multiline
       />
       <TextInput style={styles.input} placeholder="Autor" value={autor} onChangeText={setAutor} />
-      <TextInput style={styles.input} placeholder="Disciplina (opcional)" value={disciplina} onChangeText={setDisciplina} />
-      <TextInput style={styles.input} placeholder="Turma (opcional)" value={turma} onChangeText={setTurma} />
 
       <Button title={loading ? "Enviando..." : "Criar"} onPress={onSubmit} disabled={loading} />
     </View>

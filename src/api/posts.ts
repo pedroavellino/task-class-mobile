@@ -30,8 +30,8 @@ type UpdatePostInput = {
 function toPost(p: ApiPost): Post {
   return {
     id: p._id,
-    disciplina: p.disciplina,
-    turma: p.turma,
+    disciplina: p.disciplina ?? undefined,
+    turma: p.turma ?? undefined,
     titulo: p.titulo,
     conteudo: p.conteudo,
     autor: p.autor,

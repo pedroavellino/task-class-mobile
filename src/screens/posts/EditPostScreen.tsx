@@ -18,8 +18,6 @@ export function EditPostScreen() {
   const [titulo, setTitulo] = useState("");
   const [conteudo, setConteudo] = useState("");
   const [autor, setAutor] = useState("");
-  const [disciplina, setDisciplina] = useState("");
-  const [turma, setTurma] = useState("");
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -47,8 +45,6 @@ export function EditPostScreen() {
         setTitulo(post.titulo);
         setConteudo(post.conteudo);
         setAutor(post.autor);
-        setDisciplina(post.disciplina ?? "");
-        setTurma(post.turma ?? "");
       } catch {
         Alert.alert("Erro", "Não foi possível carregar o post.");
       } finally {
@@ -69,8 +65,6 @@ export function EditPostScreen() {
         titulo: titulo.trim(),
         conteudo: conteudo.trim(),
         autor: autor.trim(),
-        disciplina: disciplina.trim() || undefined,
-        turma: turma.trim() || undefined,
       });
 
       Alert.alert("Sucesso", "Post atualizado!");
@@ -103,8 +97,6 @@ export function EditPostScreen() {
         multiline
       />
       <TextInput style={styles.input} value={autor} onChangeText={setAutor} placeholder="Autor" />
-      <TextInput style={styles.input} value={disciplina} onChangeText={setDisciplina} placeholder="Disciplina" />
-      <TextInput style={styles.input} value={turma} onChangeText={setTurma} placeholder="Turma" />
 
       <Button title={saving ? "Salvando..." : "Salvar alterações"} onPress={onSubmit} disabled={saving} />
     </View>
