@@ -2,7 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { CreatePostScreen } from "../screens/posts/CreatePostScreen";
-
+import { EditPostScreen } from "../screens/posts/EditPostScreen";
 import { LoginScreen } from "../screens/auth/LoginScreen";
 import { PostsListScreen } from "../screens/posts/PostListScreen";
 import { PostDetailScreen } from "../screens/posts/PostDetailScreen";
@@ -12,6 +12,7 @@ export type AppStackParamList = {
   PostsList: undefined;
   PostDetail: { postId: string };
   CreatePost: undefined;
+  EditPost: { postId: string };
 };
 
 type AuthStackParamList = {
@@ -31,6 +32,7 @@ export function RootNavigator() {
           <AppStack.Screen name="PostsList" component={PostsListScreen} options={{ title: "Posts" }} />
           <AppStack.Screen name="PostDetail" component={PostDetailScreen} options={{ title: "Post" }} />
           <AppStack.Screen name="CreatePost" component={CreatePostScreen} options={{ title: "Novo Post" }} />
+           <AppStack.Screen name="EditPost" component={EditPostScreen} options={{ title: "Editar Post" }} />
         </AppStack.Navigator>
       ) : (
         <AuthStack.Navigator>
