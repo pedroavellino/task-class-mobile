@@ -7,12 +7,14 @@ import { LoginScreen } from "../screens/auth/LoginScreen";
 import { PostsListScreen } from "../screens/posts/PostListScreen";
 import { PostDetailScreen } from "../screens/posts/PostDetailScreen";
 import { useAuth } from "../auth/AuthContext";
+import { PostsAdminScreen } from "../screens/posts/PostAdminScreen";
 
 export type AppStackParamList = {
   PostsList: undefined;
   PostDetail: { postId: string };
   CreatePost: undefined;
   EditPost: { postId: string };
+  PostsAdmin: undefined;
 };
 
 type AuthStackParamList = {
@@ -33,6 +35,7 @@ export function RootNavigator() {
           <AppStack.Screen name="PostDetail" component={PostDetailScreen} options={{ title: "Post" }} />
           <AppStack.Screen name="CreatePost" component={CreatePostScreen} options={{ title: "Novo Post" }} />
            <AppStack.Screen name="EditPost" component={EditPostScreen} options={{ title: "Editar Post" }} />
+           <AppStack.Screen name="PostsAdmin" component={PostsAdminScreen} options={{ title: "Admin de Posts" }}/>
         </AppStack.Navigator>
       ) : (
         <AuthStack.Navigator>

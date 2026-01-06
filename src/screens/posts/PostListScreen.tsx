@@ -34,7 +34,7 @@ export function PostsListScreen() {
   navigation.setOptions({
     headerRight: () =>
       role === "admin" ? (
-        <Button title="+" onPress={() => navigation.navigate("CreatePost")} />
+        <Button title="Gerenciar" onPress={() => navigation.navigate("PostsAdmin")} />
       ) : null,
   });
 }, [navigation, role]);
@@ -52,9 +52,8 @@ export function PostsListScreen() {
 
   useFocusEffect(
   React.useCallback(() => {
-    // sempre que voltar pra esta tela, recarrega (ex.: depois de criar/editar)
     loadInitial();
-  }, [])
+  }, [search])
 );
 
   async function loadMore() {
@@ -109,15 +108,6 @@ export function PostsListScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Posts</Text>
-      {role === "admin" && (
-        <Pressable
-          style={styles.createButton}
-          onPress={() => navigation.navigate("CreatePost")}
-        >
-          <Text style={styles.createButtonText}>Novo Post</Text>
-        </Pressable>
-      )}
-
       <TextInput
         value={search}
         onChangeText={setSearch}
@@ -125,7 +115,6 @@ export function PostsListScreen() {
         autoCapitalize="none"
         style={styles.input}
       />
-
       <FlatList
         data={items}
         keyExtractor={(item) => item.id}
@@ -172,17 +161,4 @@ const styles = StyleSheet.create({
   muted: { color: "#666", marginTop: 8 },
   center: { flex: 1, alignItems: "center", justifyContent: "center" },
   emptyContainer: { flexGrow: 1, alignItems: "center", justifyContent: "center" },
-  createButton: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 12,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    marginBottom: 12,
-    alignItems: "center",
-  },
-createButtonText: {
-  fontSize: 16,
-  fontWeight: "700",
-},
 });
