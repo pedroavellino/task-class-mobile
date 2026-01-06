@@ -19,6 +19,14 @@ type CreatePostInput = {
   turma?: string;
 };
 
+type UpdatePostInput = {
+  titulo?: string;
+  conteudo?: string;
+  autor?: string;
+  disciplina?: string;
+  turma?: string;
+};
+
 function toPost(p: ApiPost): Post {
   return {
     id: p._id,
@@ -50,3 +58,13 @@ export async function createPost(input: CreatePostInput): Promise<Post> {
   const { data } = await http.post<ApiPost>("/posts", input);
   return toPost(data);
 }
+
+export async function updatePost(postId: string, input: UpdatePostInput): Promise<Post> {
+  const { data } = await http.put<ApiPost>(`/posts/${postId}`, input);
+  return toPost(data);
+}
+
+export async function deletePost(postId: string): Promise<void> {
+  await http.delete(`/posts/${postId}`);
+}
+

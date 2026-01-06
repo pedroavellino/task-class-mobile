@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
+import { http } from "../api/http";
 
 export type UserRole = "admin" | "student";
 
@@ -22,22 +23,19 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<AuthState>({ token: null, role: null });
 
-  async function signIn(input: SignInInput) {
-    // ✅ Por enquanto, o app assume que o backend tem /auth/login retornando { access_token, role }
-    // Depois, se seu backend ainda não tiver isso, a gente implementa nele.
-    const res = await fetch("http://localhost:3000/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(input),
-    });
+async function signIn(input: SignInInput) {
+  try {
+    const { data } = await http.post<{ access_token: string; role: UserRole }>(
+      "/auth/login",
+      input
+    );
 
-    if (!res.ok) {
-      throw new Error("Credenciais inválidas");
-    }
-
-    const data: { access_token: string; role: UserRole } = await res.json();
     setState({ token: data.access_token, role: data.role });
+  } catch (err) {
+    throw new Error("Credenciais inválidas");
   }
+}
+
 
   function signOut() {
     setState({ token: null, role: null });

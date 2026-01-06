@@ -2,12 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, FlatList, Text, TextInput, View, StyleSheet, Pressable } from "react-native";
 import { fetchPosts, searchPosts } from "../../api/posts";
 import type { Post } from "../../types/post";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "../../navigation/RootStack";
 import { useLayoutEffect } from "react";
 import { Button } from "react-native";
 import { useAuth } from "../../auth/AuthContext";
+import React from "react";
 
 function snippet(text: string, max = 120) {
   if (!text) return "";
@@ -48,6 +49,13 @@ export function PostsListScreen() {
       setLoading(false);
     }
   }
+
+  useFocusEffect(
+  React.useCallback(() => {
+    // sempre que voltar pra esta tela, recarrega (ex.: depois de criar/editar)
+    loadInitial();
+  }, [])
+);
 
   async function loadMore() {
     if (loadingMore || loading || isSearching) return;

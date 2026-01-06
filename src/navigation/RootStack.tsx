@@ -29,7 +29,7 @@ export function RootStack() {
         <Stack.Screen
           name="CreatePost"
           component={CreatePostScreen}
-          options={{ title: "Criar Post" }}
+          options={{ title: "Novo Post" }}
         />
       </Stack.Navigator>
     </NavigationContainer>
