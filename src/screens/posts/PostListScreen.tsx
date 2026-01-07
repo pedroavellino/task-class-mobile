@@ -34,7 +34,7 @@ export function PostsListScreen() {
   navigation.setOptions({
     headerRight: () =>
       role === "admin" ? (
-        <Button title="Gerenciar" onPress={() => navigation.navigate("PostsAdmin")} />
+        <Button title="Admin" onPress={() => navigation.navigate("AdminHome")} />
       ) : null,
   });
 }, [navigation, role]);

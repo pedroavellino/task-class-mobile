@@ -7,7 +7,11 @@ import { LoginScreen } from "../screens/auth/LoginScreen";
 import { PostsListScreen } from "../screens/posts/PostListScreen";
 import { PostDetailScreen } from "../screens/posts/PostDetailScreen";
 import { useAuth } from "../auth/AuthContext";
+import { AdminHomeScreen } from "../screens/admin/AdminHomeScreen";
 import { PostsAdminScreen } from "../screens/posts/PostAdminScreen";
+import { TeachersListScreen } from "../screens/teachers/TeachersListScreen";
+import { CreateTeacherScreen } from "../screens/teachers/CreateTeacherScreen";
+import { EditTeacherScreen } from "../screens/teachers/EditTeacherScreen";
 
 export type AppStackParamList = {
   PostsList: undefined;
@@ -15,6 +19,10 @@ export type AppStackParamList = {
   CreatePost: undefined;
   EditPost: { postId: string };
   PostsAdmin: undefined;
+  TeachersList: undefined;
+  CreateTeacher: undefined;
+  EditTeacher: { teacherId: string };
+  AdminHome: undefined;
 };
 
 type AuthStackParamList = {
@@ -34,8 +42,12 @@ export function RootNavigator() {
           <AppStack.Screen name="PostsList" component={PostsListScreen} options={{ title: "Posts" }} />
           <AppStack.Screen name="PostDetail" component={PostDetailScreen} options={{ title: "Post" }} />
           <AppStack.Screen name="CreatePost" component={CreatePostScreen} options={{ title: "Novo Post" }} />
-           <AppStack.Screen name="EditPost" component={EditPostScreen} options={{ title: "Editar Post" }} />
-           <AppStack.Screen name="PostsAdmin" component={PostsAdminScreen} options={{ title: "Admin de Posts" }}/>
+          <AppStack.Screen name="EditPost" component={EditPostScreen} options={{ title: "Editar Post" }} />
+          <AppStack.Screen name="AdminHome" component={AdminHomeScreen} options={{ title: "Admin" }} />
+          <AppStack.Screen name="PostsAdmin" component={PostsAdminScreen} options={{ title: "Admin de Posts" }}/>
+          <AppStack.Screen name="TeachersList" component={TeachersListScreen} options={{ title: "Professores" }} />
+          <AppStack.Screen name="CreateTeacher" component={CreateTeacherScreen} options={{ title: "Novo Professor" }} />
+          <AppStack.Screen name="EditTeacher" component={EditTeacherScreen} options={{ title: "Editar Professor" }} />
         </AppStack.Navigator>
       ) : (
         <AuthStack.Navigator>
