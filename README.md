@@ -19,10 +19,10 @@ O sistema é dividido em dois grandes blocos:
 - Mobile (React Native + Expo) — este repositório
 - Backend (Node.js + NestJS + MongoDB) — API REST consumida pelo app
 
-┌───────────────┐        HTTP / JSON        ┌──────────────────┐
-│   Mobile App  │  ─────────────────────▶   │     Backend API  │
-│ (React Native)│                           │(NestJS + MongoDB)│
-└───────────────┘                           └──────────────────┘
+
+   Mobile App    ─────HTTP/JSON─────▶   Backend API  
+ (React Native)                      (NestJS + MongoDB)
+
 
 # Tecnologias Utilizadas
 
@@ -41,21 +41,6 @@ O sistema é dividido em dois grandes blocos:
 - NestJS
 - MongoDB
 - JWT para autenticação
-
-# Estrutura de Pastas (Mobile)
-
-src/
- ├── api/              # Comunicação com a API (posts, teachers, students)
- ├── auth/             # Contexto de autenticação
- ├── navigation/       # Navegação (RootNavigator)
- ├── screens/
- │    ├── auth/        # Login
- │    ├── posts/       # Posts (lista, detalhe, CRUD)
- │    ├── admin/       # Home administrativa
- │    ├── teachers/    # CRUD de professores
- │    └── students/    # CRUD de alunos
- ├── types/            # Tipagens globais
- └── ui/               # Tema e identidade visual
 
 # Autenticação e Autorização
 
