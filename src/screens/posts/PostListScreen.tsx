@@ -7,6 +7,7 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { AppStackParamList } from "../../navigation/RootNavigator";
 import { useLayoutEffect } from "react";
 import { useAuth } from "../../auth/AuthContext";
+import { theme } from "../../ui/theme";
 
 function snippet(text: string, max = 120) {
   if (!text) return "";
@@ -111,6 +112,7 @@ export function PostsListScreen() {
         value={search}
         onChangeText={setSearch}
         placeholder="Buscar por título ou conteúdo…"
+        placeholderTextColor={theme.colors.muted}
         autoCapitalize="none"
         style={styles.input}
       />
@@ -135,27 +137,33 @@ export function PostsListScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 24 },
-  title: { fontSize: 24, fontWeight: "700", marginBottom: 12 },
+  container: { flex: 1, padding: 16, paddingTop: 24, backgroundColor: theme.colors.bg },
+  title: { fontSize: 24, fontWeight: "800", marginBottom: 12, color: theme.colors.text },
+
   input: {
     borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 12,
+    borderColor: theme.colors.border,
+    backgroundColor: theme.colors.inputBg,
+    color: theme.colors.text,
+    borderRadius: theme.radius.md,
     paddingHorizontal: 12,
-    paddingVertical: 10,
+    paddingVertical: 12,
     marginBottom: 12,
   },
+
   card: {
     borderWidth: 1,
-    borderColor: "#eee",
-    borderRadius: 16,
+    borderColor: theme.colors.border,
+    backgroundColor: theme.colors.card,
+    borderRadius: theme.radius.lg,
     padding: 14,
     marginBottom: 12,
   },
-  cardTitle: { fontSize: 16, fontWeight: "700", marginBottom: 6 },
-  cardMeta: { fontSize: 12, marginBottom: 8, color: "#666" },
-  cardBody: { fontSize: 14, color: "#222" },
-  muted: { color: "#666", marginTop: 8 },
-  center: { flex: 1, alignItems: "center", justifyContent: "center" },
+  cardTitle: { fontSize: 16, fontWeight: "800", marginBottom: 6, color: theme.colors.text },
+  cardMeta: { fontSize: 12, marginBottom: 8, color: theme.colors.muted },
+  cardBody: { fontSize: 14, color: theme.colors.text, opacity: 0.92 },
+
+  muted: { color: theme.colors.muted, marginTop: 8 },
+  center: { flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: theme.colors.bg },
   emptyContainer: { flexGrow: 1, alignItems: "center", justifyContent: "center" },
 });
