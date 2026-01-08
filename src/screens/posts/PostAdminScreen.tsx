@@ -18,7 +18,6 @@ export function PostsAdminScreen() {
   const [loadingMore, setLoadingMore] = useState(false);
   const limit = 10;
 
-  // Bloqueio simples no mobile
   if (role !== "admin") {
     return (
       <View style={styles.center}>

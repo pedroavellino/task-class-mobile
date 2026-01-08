@@ -36,7 +36,6 @@ export function EditStudentScreen() {
     );
   }
 
-  // Não temos GET /students/:id → carrega pela lista e filtra
   useEffect(() => {
     (async () => {
       try {

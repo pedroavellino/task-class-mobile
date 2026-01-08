@@ -36,7 +36,6 @@ export function EditTeacherScreen() {
     );
   }
 
-  // Carrega o professor (usando a lista, já que não temos GET /teachers/:id)
   useEffect(() => {
     (async () => {
       try {

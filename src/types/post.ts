@@ -5,7 +5,6 @@ export type Post = {
   conteudo: string;
   createdAt?: string;
 
-  // Mantemos opcionais porque o backend ainda pode enviar
   disciplina?: string;
   turma?: string;
 };

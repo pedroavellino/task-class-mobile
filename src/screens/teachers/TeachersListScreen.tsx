@@ -17,7 +17,6 @@ export function TeachersListScreen() {
   const [loadingMore, setLoadingMore] = useState(false);
   const limit = 10;
 
-  // Bloqueio no mobile
   if (role !== "admin") {
     return (
       <View style={styles.center}>
