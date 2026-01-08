@@ -12,6 +12,10 @@ import { PostsAdminScreen } from "../screens/posts/PostAdminScreen";
 import { TeachersListScreen } from "../screens/teachers/TeachersListScreen";
 import { CreateTeacherScreen } from "../screens/teachers/CreateTeacherScreen";
 import { EditTeacherScreen } from "../screens/teachers/EditTeacherScreen";
+import { StudentsListScreen } from "../screens/students/StudentsListScreen";
+import { CreateStudentScreen } from "../screens/students/CreateStudentScreen";
+import { EditStudentScreen } from "../screens/students/EditStudentScreen";
+
 
 export type AppStackParamList = {
   PostsList: undefined;
@@ -22,6 +26,9 @@ export type AppStackParamList = {
   TeachersList: undefined;
   CreateTeacher: undefined;
   EditTeacher: { teacherId: string };
+  StudentsList: undefined;
+  CreateStudent: undefined;
+  EditStudent: { studentId: string };
   AdminHome: undefined;
 };
 
@@ -48,6 +55,9 @@ export function RootNavigator() {
           <AppStack.Screen name="TeachersList" component={TeachersListScreen} options={{ title: "Professores" }} />
           <AppStack.Screen name="CreateTeacher" component={CreateTeacherScreen} options={{ title: "Novo Professor" }} />
           <AppStack.Screen name="EditTeacher" component={EditTeacherScreen} options={{ title: "Editar Professor" }} />
+          <AppStack.Screen name="StudentsList" component={StudentsListScreen} options={{ title: "Alunos" }} />
+          <AppStack.Screen name="CreateStudent" component={CreateStudentScreen} options={{ title: "Novo Aluno" }} />
+          <AppStack.Screen name="EditStudent" component={EditStudentScreen} options={{ title: "Editar Aluno" }} />
         </AppStack.Navigator>
       ) : (
         <AuthStack.Navigator>

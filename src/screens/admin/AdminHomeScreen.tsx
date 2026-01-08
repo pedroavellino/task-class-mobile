@@ -33,10 +33,9 @@ export function AdminHomeScreen() {
         <Text style={styles.cardDesc}>Listar, cadastrar, editar e excluir</Text>
       </Pressable>
 
-      {/* Depois a gente adiciona: Alunos */}
-      <Pressable style={[styles.card, styles.disabledCard]} disabled>
+      <Pressable style={styles.card} onPress={() => navigation.navigate("StudentsList")}>
         <Text style={styles.cardTitle}>Alunos</Text>
-        <Text style={styles.cardDesc}>Em breve</Text>
+        <Text style={styles.cardDesc}>Listar, cadastrar, editar e excluir</Text>
       </Pressable>
     </View>
   );
