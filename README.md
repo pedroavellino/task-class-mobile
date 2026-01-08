@@ -19,10 +19,7 @@ O sistema é dividido em dois grandes blocos:
 - Mobile (React Native + Expo) — este repositório
 - Backend (Node.js + NestJS + MongoDB) — API REST consumida pelo app
 
-
-   Mobile App    ─────HTTP/JSON─────▶   Backend API  
- (React Native)                      (NestJS + MongoDB)
-
+   Mobile App (React Native)   ─────HTTP/JSON─────▶   Backend API (NestJS + MongoDB)
 
 # Tecnologias Utilizadas
 
