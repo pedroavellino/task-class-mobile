@@ -1,14 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
-import { ActivityIndicator, FlatList, Text, TextInput, View, StyleSheet, Pressable } from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
+import { ActivityIndicator, Button, FlatList, Text, TextInput, View, StyleSheet, Pressable } from "react-native";
 import { fetchPosts, searchPosts } from "../../api/posts";
 import type { Post } from "../../types/post";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { AppStackParamList } from "../../navigation/RootNavigator";
 import { useLayoutEffect } from "react";
-import { Button } from "react-native";
 import { useAuth } from "../../auth/AuthContext";
-import React from "react";
 
 function snippet(text: string, max = 120) {
   if (!text) return "";
@@ -28,16 +26,17 @@ export function PostsListScreen() {
 
   const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>();
 
-  const { role } = useAuth();
+  const { role, signOut } = useAuth();
 
   useLayoutEffect(() => {
   navigation.setOptions({
+    headerLeft: () => <Button title="Sair" onPress={signOut} />,
     headerRight: () =>
       role === "admin" ? (
         <Button title="Admin" onPress={() => navigation.navigate("AdminHome")} />
       ) : null,
   });
-}, [navigation, role]);
+}, [navigation, role, signOut]);
 
   async function loadInitial() {
     setLoading(true);
