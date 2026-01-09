@@ -1,4 +1,5 @@
 import { http } from "./http";
+import axios from "axios"
 
 export type Teacher = {
   id: string;
@@ -45,7 +46,7 @@ function toTeacher(u: ApiTeacher): Teacher {
 }
 
 export async function fetchTeachers(params: { limit: number; page: number }) {
-  const { data } = await http.get<PaginatedResponse<ApiTeacher>>("/teachers", { params });
+  const { data } = await axios.get<PaginatedResponse<ApiTeacher>>("https://task-class-api-latest.onrender.com/teachers", { params });
   return {
     ...data,
     items: data.items.map(toTeacher),
@@ -53,15 +54,15 @@ export async function fetchTeachers(params: { limit: number; page: number }) {
 }
 
 export async function createTeacher(input: CreateTeacherInput) {
-  const { data } = await http.post<ApiTeacher>("/teachers", input);
+  const { data } = await axios.post<ApiTeacher>("https://task-class-api-latest.onrender.com/teachers", input);
   return toTeacher(data);
 }
 
 export async function updateTeacher(teacherId: string, input: UpdateTeacherInput) {
-  const { data } = await http.put<ApiTeacher>(`/teachers/${teacherId}`, input);
+  const { data } = await axios.put<ApiTeacher>(`https://task-class-api-latest.onrender.com/teachers/${teacherId}`, input);
   return toTeacher(data);
 }
 
 export async function deleteTeacher(teacherId: string): Promise<void> {
-  await http.delete(`/teachers/${teacherId}`);
+  await axios.delete(`https://task-class-api-latest.onrender.com/teachers/${teacherId}`);
 }

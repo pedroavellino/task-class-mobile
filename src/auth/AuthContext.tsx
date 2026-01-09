@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
 import { http } from "../api/http";
+import axios from "axios"
 
 export type UserRole = "admin" | "student";
 
@@ -25,8 +26,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 async function signIn(input: SignInInput) {
   try {
-    const { data } = await http.post<{ access_token: string; role: UserRole }>(
-      "/auth/login",
+    const { data } = await axios.post<{ access_token: string; role: UserRole }>(
+      "https://task-class-api-latest.onrender.com/auth/login",
       input
     );
 
