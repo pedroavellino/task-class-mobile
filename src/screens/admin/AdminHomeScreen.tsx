@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { AppStackParamList } from "../../navigation/RootNavigator";
 import { useAuth } from "../../auth/AuthContext";
+import { theme } from "../../ui/theme";
 
 export function AdminHomeScreen() {
   const { role } = useAuth();
@@ -13,7 +14,7 @@ export function AdminHomeScreen() {
     return (
       <View style={styles.center}>
         <Text style={styles.title}>Acesso negado</Text>
-        <Text>Somente professores (admin) podem acessar a área administrativa.</Text>
+        <Text style={styles.muted}>Somente professores (admin) podem acessar a área administrativa.</Text>
       </View>
     );
   }
@@ -33,30 +34,31 @@ export function AdminHomeScreen() {
         <Text style={styles.cardDesc}>Listar, cadastrar, editar e excluir</Text>
       </Pressable>
 
-      {/* Depois a gente adiciona: Alunos */}
-      <Pressable style={[styles.card, styles.disabledCard]} disabled>
+      <Pressable style={styles.card} onPress={() => navigation.navigate("StudentsList")}>
         <Text style={styles.cardTitle}>Alunos</Text>
-        <Text style={styles.cardDesc}>Em breve</Text>
+        <Text style={styles.cardDesc}>Listar, cadastrar, editar e excluir</Text>
       </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 24 },
-  center: { flex: 1, alignItems: "center", justifyContent: "center", padding: 16 },
-  title: { fontSize: 26, fontWeight: "800", marginBottom: 6 },
-  subtitle: { color: "#666", marginBottom: 18 },
+  container: { flex: 1, padding: 16, paddingTop: 24, backgroundColor: theme.colors.bg },
+  center: { flex: 1, alignItems: "center", justifyContent: "center", padding: 16, backgroundColor: theme.colors.bg },
+
+  title: { fontSize: 26, fontWeight: "900", marginBottom: 6, color: theme.colors.text },
+  subtitle: { color: theme.colors.muted, marginBottom: 18 },
 
   card: {
     borderWidth: 1,
-    borderColor: "#eee",
-    borderRadius: 16,
+    borderColor: theme.colors.border,
+    backgroundColor: theme.colors.card,
+    borderRadius: theme.radius.lg,
     padding: 16,
     marginBottom: 12,
   },
-  cardTitle: { fontSize: 16, fontWeight: "800", marginBottom: 6 },
-  cardDesc: { color: "#666" },
+  cardTitle: { fontSize: 16, fontWeight: "900", marginBottom: 6, color: theme.colors.text },
+  cardDesc: { color: theme.colors.muted },
 
-  disabledCard: { opacity: 0.5 },
+  muted: { color: theme.colors.muted },
 });

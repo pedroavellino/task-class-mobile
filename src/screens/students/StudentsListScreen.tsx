@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { ActivityIndicator, Alert, FlatList, Pressable, StyleSheet, Text, View, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { AppStackParamList } from "../../navigation/RootNavigator";
-import { deletePost, fetchPosts } from "../../api/posts";
-import type { Post } from "../../types/post";
+import { deleteStudent, fetchStudents, type Student } from "../../api/students";
 import { useAuth } from "../../auth/AuthContext";
 
-export function PostsAdminScreen() {
+export function StudentsListScreen() {
   const { role } = useAuth();
   const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>();
 
-  const [items, setItems] = useState<Post[]>([]);
+  const [items, setItems] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [page, setPage] = useState(1);
@@ -22,16 +21,22 @@ export function PostsAdminScreen() {
     return (
       <View style={styles.center}>
         <Text style={styles.title}>Acesso negado</Text>
-        <Text>Somente professores (admin) podem administrar postagens.</Text>
+        <Text>Somente professores (admin) podem administrar alunos.</Text>
       </View>
     );
   }
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <Button title="Novo" onPress={() => navigation.navigate("CreateStudent")} />,
+    });
+  }, [navigation]);
+
   async function loadInitial() {
     setLoading(true);
     try {
-      const data = await fetchPosts({ limit, page: 1 });
-      setItems(data);
+      const data = await fetchStudents({ limit, page: 1 });
+      setItems(data.items);
       setPage(1);
     } finally {
       setLoading(false);
@@ -43,9 +48,9 @@ export function PostsAdminScreen() {
     setLoadingMore(true);
     try {
       const nextPage = page + 1;
-      const data = await fetchPosts({ limit, page: nextPage });
-      if (data.length > 0) {
-        setItems((prev) => [...prev, ...data]);
+      const data = await fetchStudents({ limit, page: nextPage });
+      if (data.items.length > 0) {
+        setItems((prev) => [...prev, ...data.items]);
         setPage(nextPage);
       }
     } finally {
@@ -53,19 +58,18 @@ export function PostsAdminScreen() {
     }
   }
 
-  function confirmDelete(postId: string) {
-    Alert.alert("Excluir post", "Tem certeza que deseja excluir este post?", [
+  function confirmDelete(studentId: string, email: string) {
+    Alert.alert("Excluir aluno", `Tem certeza que deseja excluir ${email}?`, [
       { text: "Cancelar", style: "cancel" },
       {
         text: "Excluir",
         style: "destructive",
         onPress: async () => {
           try {
-            await deletePost(postId);
-            // Atualiza lista local sem refetch
-            setItems((prev) => prev.filter((p) => p.id !== postId));
+            await deleteStudent(studentId);
+            setItems((prev) => prev.filter((s) => s.id !== studentId));
           } catch {
-            Alert.alert("Erro", "Não foi possível excluir o post.");
+            Alert.alert("Erro", "Não foi possível excluir o aluno.");
           }
         },
       },
@@ -88,37 +92,30 @@ export function PostsAdminScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Administração de Posts</Text>
-
-      <Pressable style={styles.primaryBtn} onPress={() => navigation.navigate("CreatePost")}>
-        <Text style={styles.primaryBtnText}>Novo Post</Text>
-      </Pressable>
+      <Text style={styles.title}>Alunos</Text>
 
       <FlatList
         data={items}
         keyExtractor={(item) => item.id}
         onEndReached={loadMore}
         onEndReachedThreshold={0.4}
-        ListEmptyComponent={<Text style={styles.muted}>Nenhum post encontrado.</Text>}
+        ListEmptyComponent={<Text style={styles.muted}>Nenhum aluno encontrado.</Text>}
         ListFooterComponent={loadingMore ? <ActivityIndicator style={{ marginVertical: 12 }} /> : null}
         renderItem={({ item }) => (
           <View style={styles.card}>
-            <Pressable onPress={() => navigation.navigate("PostDetail", { postId: item.id })}>
-              <Text style={styles.cardTitle}>{item.titulo}</Text>
-              <Text style={styles.cardMeta}>{item.autor}</Text>
-            </Pressable>
+            <Text style={styles.cardTitle}>{item.email}</Text>
 
             <View style={styles.actionsRow}>
               <Pressable
                 style={[styles.actionBtn, styles.editBtn]}
-                onPress={() => navigation.navigate("EditPost", { postId: item.id })}
+                onPress={() => navigation.navigate("EditStudent", { studentId: item.id })}
               >
                 <Text style={styles.actionText}>Editar</Text>
               </Pressable>
 
               <Pressable
                 style={[styles.actionBtn, styles.deleteBtn]}
-                onPress={() => confirmDelete(item.id)}
+                onPress={() => confirmDelete(item.id, item.email)}
               >
                 <Text style={styles.actionText}>Excluir</Text>
               </Pressable>
@@ -133,19 +130,8 @@ export function PostsAdminScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, paddingTop: 24 },
   center: { flex: 1, alignItems: "center", justifyContent: "center", padding: 16 },
-  title: { fontSize: 22, fontWeight: "700", marginBottom: 12 },
+  title: { fontSize: 22, fontWeight: "800", marginBottom: 12 },
   muted: { color: "#666", marginTop: 8 },
-
-  primaryBtn: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 12,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    marginBottom: 12,
-    alignItems: "center",
-  },
-  primaryBtnText: { fontSize: 16, fontWeight: "700" },
 
   card: {
     borderWidth: 1,
@@ -154,8 +140,7 @@ const styles = StyleSheet.create({
     padding: 14,
     marginBottom: 12,
   },
-  cardTitle: { fontSize: 16, fontWeight: "700", marginBottom: 6 },
-  cardMeta: { fontSize: 12, marginBottom: 10, color: "#666" },
+  cardTitle: { fontSize: 14, fontWeight: "700", marginBottom: 10 },
 
   actionsRow: { flexDirection: "row", gap: 10 },
   actionBtn: {

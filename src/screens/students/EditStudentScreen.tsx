@@ -3,17 +3,17 @@ import { Alert, Button, StyleSheet, Text, TextInput, View, ActivityIndicator } f
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { AppStackParamList } from "../../navigation/RootNavigator";
-import { updateTeacher, fetchTeachers } from "../../api/teachers";
+import { updateStudent, fetchStudents } from "../../api/students";
 import { useAuth } from "../../auth/AuthContext";
 
-type RouteProps = RouteProp<AppStackParamList, "EditTeacher">;
+type RouteProps = RouteProp<AppStackParamList, "EditStudent">;
 
-export function EditTeacherScreen() {
+export function EditStudentScreen() {
   const { role } = useAuth();
   const route = useRoute<RouteProps>();
   const navigation = useNavigation<NativeStackNavigationProp<AppStackParamList>>();
 
-  const teacherId = route.params?.teacherId;
+  const studentId = route.params?.studentId;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,10 +28,10 @@ export function EditTeacherScreen() {
     );
   }
 
-  if (!teacherId) {
+  if (!studentId) {
     return (
       <View style={styles.center}>
-        <Text>Professor inválido</Text>
+        <Text>Aluno inválido</Text>
       </View>
     );
   }
@@ -39,17 +39,17 @@ export function EditTeacherScreen() {
   useEffect(() => {
     (async () => {
       try {
-        const data = await fetchTeachers({ limit: 50, page: 1 });
-        const teacher = data.items.find((t) => t.id === teacherId);
-        if (!teacher) throw new Error();
-        setEmail(teacher.email);
+        const data = await fetchStudents({ limit: 50, page: 1 });
+        const student = data.items.find((s) => s.id === studentId);
+        if (!student) throw new Error();
+        setEmail(student.email);
       } catch {
-        Alert.alert("Erro", "Não foi possível carregar o professor.");
+        Alert.alert("Erro", "Não foi possível carregar o aluno.");
       } finally {
         setLoading(false);
       }
     })();
-  }, [teacherId]);
+  }, [studentId]);
 
   async function onSubmit() {
     const e = email.trim().toLowerCase();
@@ -66,15 +66,15 @@ export function EditTeacherScreen() {
 
     setSaving(true);
     try {
-      await updateTeacher(teacherId, {
+      await updateStudent(studentId, {
         email: e,
         password: password || undefined,
       });
 
-      Alert.alert("Sucesso", "Professor atualizado!");
+      Alert.alert("Sucesso", "Aluno atualizado!");
       navigation.goBack();
     } catch {
-      Alert.alert("Erro", "Erro ao atualizar professor.");
+      Alert.alert("Erro", "Erro ao atualizar aluno.");
     } finally {
       setSaving(false);
     }
@@ -90,7 +90,7 @@ export function EditTeacherScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Editar Professor</Text>
+      <Text style={styles.title}>Editar Aluno</Text>
 
       <TextInput
         style={styles.input}
