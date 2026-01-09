@@ -1,13 +1,13 @@
 # TaskClass — Aplicação Mobile
 
 Aplicação mobile desenvolvida em React Native (Expo) como parte do 4º Tech Challenge da Pós-Graduação em Full Stack Development.
-O app consome um backend em Node.js + NestJS, permitindo a gestão e visualização de postagens educacionais, professores e alunos.
+O aplicativo consome uma API REST hospedada, desenvolvida em Node.js + NestJS, permitindo a gestão e visualização de postagens educacionais, além do gerenciamento de professores e alunos.
 
 # Objetivo do Projeto
 
-Desenvolver uma interface mobile robusta, intuitiva e eficiente para uma plataforma de blogging educacional, permitindo:
+Desenvolver uma interface mobile robusta, intuitiva e funcional para uma plataforma de blogging educacional, permitindo:
 
-- Alunos visualizarem postagens
+- Alunos visualizarem postagens educacionais
 - Professores criarem, editarem e excluírem conteúdos
 - Administração completa de posts, professores e alunos
 - Controle de acesso por autenticação e papéis (roles)
@@ -17,9 +17,15 @@ Desenvolver uma interface mobile robusta, intuitiva e eficiente para uma platafo
 O sistema é dividido em dois grandes blocos:
 
 - Mobile (React Native + Expo) — este repositório
-- Backend (Node.js + NestJS + MongoDB) — API REST consumida pelo app
+- Backend: API REST desenvolvida em Node.js + NestJS, com MongoDB
 
-   Mobile App (React Native)   ─────HTTP/JSON─────▶   Backend API (NestJS + MongoDB)
+   Mobile App (React Native)
+        │
+        │  HTTP / JSON
+        ▼
+Backend API (NestJS + MongoDB)
+
+O mobile é responsável pela interface e experiência do usuário, enquanto o backend centraliza regras de negócio, persistência de dados e autenticação.
 
 # Tecnologias Utilizadas
 
@@ -48,11 +54,11 @@ O sistema trabalha com dois perfis:
 Pode:
 
 - Visualizar lista de posts
-- Ler posts completos
+- Ler postagens completas
 
 Não pode:
 
-- Criar, editar ou excluir conteúdo
+- Criar, editar ou excluir conteúdos
 - Acessar área administrativa
 
 2 - Professor (admin)
@@ -62,28 +68,28 @@ Pode:
 - Criar, editar e excluir posts
 - Gerenciar professores
 - Gerenciar alunos
-- Acessar área administrativa
+- Acessar área administrativa do aplicativo
 
 O controle de acesso é feito via:
 
-- JWT (token retornado no login)
-- Context API no mobile
-- Verificação de role nas telas
+- Token JWT retornado no login
+- Context API no mobile (AuthContext)
+- Verificação de papel (role) nas telas e fluxos de navegação
 
 # Principais Funcionalidades
 
-1 - Login
+1 - Autenticação
 
-- Autenticação via e-mail e senha
-- Redirecionamento automático após login
-- Botão “Sair” disponível no app
+- Login via e-mail e senha
+- Controle de sessão no mobile
+- Botão “Sair”, permitindo retorno à tela de login
 
 2 - Postagens
 
 - Listagem paginada de posts
 - Busca por palavras-chave
-- Visualização completa do post
-- CRUD completo para professores
+- Visualização completa do conteúdo
+- CRUD completo de postagens para professores
 
 3 - Área Administrativa
 
@@ -99,46 +105,50 @@ O controle de acesso é feito via:
 
 - Node.js 18+
 - Expo CLI
-- Backend rodando localmente
 
 2 - Passos
 
 npm install
-
 npx expo start
 
-8.3 Por padrão, o app consome o backend em:
+O aplicativo consome uma API hospedada, não sendo necessário executar o backend localmente para testes ou avaliação.
 
-http://localhost:3000
+3 Backend / API
 
-# Estilo e UI
+A API utilizada pelo aplicativo está disponível em ambiente cloud:
 
-O app utiliza um tema centralizado (src/ui/theme.ts) para garantir:
+https://task-class-api-latest.onrender.com
+
+Todas as requisições do mobile são realizadas diretamente para esse endpoint, utilizando axios.
+
+# Estilo e Interface
+
+O aplicativo utiliza estilos centralizados para garantir:
 
 - Consistência visual
 - Facilidade de manutenção
-- Identidade moderna e “tech”
+- Identidade moderna e profissional
 
-Cores escuras foram escolhidas para melhor legibilidade e apresentação em vídeo.
+O design prioriza simplicidade, legibilidade e clareza na navegação, especialmente pensando na apresentação em vídeo do projeto.
 
 # Usuários de Teste
 
 1 - Professor (admin)
 
 email: admin@taskclass.com
-senha: 123456
+senha: admin123
 
 2 - Aluno (student)
 
 email: aluno@taskclass.com
-senha: 123456
+senha: aluno123
 
 # Considerações Finais
 
-Este projeto consolidou conhecimentos de:
+Este projeto consolidou conhecimentos fundamentais em:
 
-- Mobile Development
+- Desenvolvimento mobile com React Native
 - Integração frontend/backend
-- Autenticação
+- Autenticação e controle de acesso
 - Arquitetura de aplicações
-- Organização e boas práticas em React Native
+- Organização e boas práticas de desenvolvimento de software
