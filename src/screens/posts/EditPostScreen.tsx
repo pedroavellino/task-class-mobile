@@ -5,6 +5,7 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { AppStackParamList } from "../../navigation/RootNavigator";
 import { fetchPostById, updatePost } from "../../api/posts";
 import { useAuth } from "../../auth/AuthContext";
+import { theme } from "../../ui/theme";
 
 type RouteProps = RouteProp<AppStackParamList, "EditPost">;
 
@@ -24,16 +25,17 @@ export function EditPostScreen() {
 
   if (role !== "admin") {
     return (
-      <View style={styles.center}>
-        <Text>Acesso negado</Text>
+      <View style={[styles.screen, styles.center]}>
+        <Text style={styles.title}>Acesso negado</Text>
+        <Text style={styles.muted}>Somente professores (admin) podem editar postagens.</Text>
       </View>
     );
   }
 
   if (!postId) {
     return (
-      <View style={styles.center}>
-        <Text>Post inválido</Text>
+      <View style={[styles.screen, styles.center]}>
+        <Text style={styles.title}>Post inválido</Text>
       </View>
     );
   }
@@ -78,42 +80,86 @@ export function EditPostScreen() {
 
   if (loading) {
     return (
-      <View style={styles.center}>
+      <View style={[styles.screen, styles.center]}>
         <ActivityIndicator />
+        <Text style={styles.muted}>Carregando…</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.screen}>
       <Text style={styles.title}>Editar Post</Text>
+      <Text style={styles.subtitle}>Ajuste as informações e salve</Text>
 
-      <TextInput style={styles.input} value={titulo} onChangeText={setTitulo} placeholder="Título" />
-      <TextInput
-        style={[styles.input, styles.multiline]}
-        value={conteudo}
-        onChangeText={setConteudo}
-        placeholder="Conteúdo"
-        multiline
-      />
-      <TextInput style={styles.input} value={autor} onChangeText={setAutor} placeholder="Autor" />
+      <View style={styles.card}>
+        <Text style={styles.label}>Título</Text>
+        <TextInput
+          style={styles.input}
+          value={titulo}
+          onChangeText={setTitulo}
+          placeholder="Título"
+          placeholderTextColor={theme.colors.muted}
+        />
 
-      <Button title={saving ? "Salvando..." : "Salvar alterações"} onPress={onSubmit} disabled={saving} />
+        <Text style={[styles.label, { marginTop: 10 }]}>Conteúdo</Text>
+        <TextInput
+          style={[styles.input, styles.multiline]}
+          value={conteudo}
+          onChangeText={setConteudo}
+          placeholder="Conteúdo"
+          placeholderTextColor={theme.colors.muted}
+          multiline
+        />
+
+        <Text style={[styles.label, { marginTop: 10 }]}>Autor</Text>
+        <TextInput
+          style={styles.input}
+          value={autor}
+          onChangeText={setAutor}
+          placeholder="Autor"
+          placeholderTextColor={theme.colors.muted}
+          autoCapitalize="words"
+        />
+
+        <View style={{ marginTop: 12 }}>
+          <Button title={saving ? "Salvando..." : "Salvar alterações"} onPress={onSubmit} disabled={saving} />
+        </View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 24 },
-  title: { fontSize: 24, fontWeight: "700", marginBottom: 12 },
-  input: {
+  screen: {
+    flex: 1,
+    backgroundColor: theme.colors.bg,
+    padding: theme.spacing.md,
+    paddingTop: theme.spacing.lg,
+  },
+  center: { alignItems: "center", justifyContent: "center", padding: theme.spacing.md },
+
+  title: { fontSize: theme.font.h2, fontWeight: "800", color: theme.colors.text, marginBottom: 6 },
+  subtitle: { color: theme.colors.muted, marginBottom: theme.spacing.md },
+  muted: { color: theme.colors.muted, textAlign: "center", marginTop: 8 },
+
+  card: {
+    backgroundColor: theme.colors.card,
     borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 12,
+    borderColor: theme.colors.border,
+    borderRadius: theme.radius.lg,
+    padding: theme.spacing.md,
+  },
+
+  label: { color: theme.colors.muted, fontSize: 12, marginBottom: 6 },
+  input: {
+    backgroundColor: theme.colors.card2,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    borderRadius: theme.radius.md,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    marginBottom: 12,
+    color: theme.colors.text,
   },
   multiline: { height: 120, textAlignVertical: "top" },
-  center: { flex: 1, alignItems: "center", justifyContent: "center" },
 });
