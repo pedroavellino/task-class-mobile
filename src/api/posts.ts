@@ -41,37 +41,31 @@ function toPost(p: ApiPost): Post {
 }
 
 export async function fetchPosts(params: { limit: number; page: number }): Promise<Post[]> {
-  const { data } = await axios.get('https://task-class-api-latest.onrender.com/posts', { params })
-  //const { data } = await http.get<ApiPost[]>("/posts", { params });
+  const { data } = await axios.get<ApiPost[]>("https://task-class-api-latest.onrender.com/posts", { params });
   return data.map(toPost);
 }
 
 export async function searchPosts(search: string): Promise<Post[]> {
-  const { data } = await axios.get('https://task-class-api-latest.onrender.com/posts/search', {  params: { search } })
-  //const { data } = await http.get<ApiPost[]>("/posts/search", { params: { search } });
+  const { data } = await axios.get<ApiPost[]>("https://task-class-api-latest.onrender.com/posts/search", { params: { search } });
   return data.map(toPost);
 }
 
 export async function fetchPostById(postId: string): Promise<Post> {
-  const { data } = await axios.get(`https://task-class-api-latest.onrender.com/posts/posts/${postId}`)
-  //const { data } = await http.get<ApiPost>(`/posts/${postId}`);
+  const { data } = await axios.get<ApiPost>(`https://task-class-api-latest.onrender.com/posts/${postId}`);
   return toPost(data);
 }
 
 export async function createPost(input: CreatePostInput): Promise<Post> {
-  const { data } = await axios.post('https://task-class-api-latest.onrender.com/posts', input)
-  //const { data } = await http.post<ApiPost>("/posts", input);
+  const { data } = await axios.post<ApiPost>("https://task-class-api-latest.onrender.com/posts", input);
   return toPost(data);
 }
 
 export async function updatePost(postId: string, input: UpdatePostInput): Promise<Post> {
-  const { data } = await axios.put(`https://task-class-api-latest.onrender.com/posts/${postId}`, input)
-  //const { data } = await http.put<ApiPost>(`/posts/${postId}`, input);
+  const { data } = await axios.put<ApiPost>(`https://task-class-api-latest.onrender.com/posts/${postId}`, input);
   return toPost(data);
 }
 
 export async function deletePost(postId: string): Promise<void> {
-  await axios.delete(`https://task-class-api-latest.onrender.com/posts/${postId}`)
-  //await http.delete(`/posts/${postId}`);
+  await axios.delete(`https://task-class-api-latest.onrender.com/posts/${postId}`);
 }
 
