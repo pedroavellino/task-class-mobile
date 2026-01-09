@@ -6,6 +6,7 @@ import type { AppStackParamList } from "../../navigation/RootNavigator";
 import { deleteTeacher, fetchTeachers, type Teacher } from "../../api/teachers";
 import { useAuth } from "../../auth/AuthContext";
 import { theme } from "../../ui/theme";
+import { HeaderActionButton } from "../../components/HeaderActionButton";
 
 export function TeachersListScreen() {
   const { role } = useAuth();
@@ -41,25 +42,11 @@ export function TeachersListScreen() {
 useLayoutEffect(() => {
   navigation.setOptions({
     headerRight: () => (
-      <Pressable
-        onPress={() => navigation.navigate("CreateTeacher")}
-        style={({ pressed }) => [
-          {
-            paddingHorizontal: 12,
-            paddingVertical: 8,
-            borderRadius: theme.radius.md,
-            backgroundColor: theme.colors.card2,
-            borderWidth: 1,
-            borderColor: theme.colors.border,
-            opacity: pressed ? 0.8 : 1,
-          },
-        ]}
-      >
-        <Text style={{ color: theme.colors.text, fontWeight: "800" }}>Novo</Text>
-      </Pressable>
+      <HeaderActionButton title="Novo" onPress={() => navigation.navigate("CreateTeacher")} />
     ),
   });
 }, [navigation]);
+
 
   async function loadInitial() {
     setLoading(true);

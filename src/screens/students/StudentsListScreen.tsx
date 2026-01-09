@@ -6,6 +6,7 @@ import type { AppStackParamList } from "../../navigation/RootNavigator";
 import { deleteStudent, fetchStudents, type Student } from "../../api/students";
 import { useAuth } from "../../auth/AuthContext";
 import { theme } from "../../ui/theme";
+import { HeaderActionButton } from "../../components/HeaderActionButton";
 
 export function StudentsListScreen() {
   const { role } = useAuth();
@@ -27,11 +28,13 @@ export function StudentsListScreen() {
     );
   }
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <Button title="Novo" onPress={() => navigation.navigate("CreateStudent")} />,
-    });
-  }, [navigation]);
+useLayoutEffect(() => {
+  navigation.setOptions({
+    headerRight: () => (
+      <HeaderActionButton title="Novo" onPress={() => navigation.navigate("CreateStudent")} />
+    ),
+  });
+}, [navigation]);
 
   async function loadInitial() {
     setLoading(true);

@@ -8,6 +8,7 @@ import type { AppStackParamList } from "../../navigation/RootNavigator";
 import { useLayoutEffect } from "react";
 import { useAuth } from "../../auth/AuthContext";
 import { theme } from "../../ui/theme";
+import { HeaderActionButton } from "../../components/HeaderActionButton";
 
 function snippet(text: string, max = 120) {
   if (!text) return "";
@@ -31,10 +32,10 @@ export function PostsListScreen() {
 
   useLayoutEffect(() => {
   navigation.setOptions({
-    headerLeft: () => <Button title="Sair" onPress={signOut} />,
+    headerLeft: () => <HeaderActionButton title="Sair" onPress={signOut} />,
     headerRight: () =>
       role === "admin" ? (
-        <Button title="Admin" onPress={() => navigation.navigate("AdminHome")} />
+        <HeaderActionButton title="Admin" onPress={() => navigation.navigate("AdminHome")} />
       ) : null,
   });
 }, [navigation, role, signOut]);
