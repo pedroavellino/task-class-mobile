@@ -1,4 +1,3 @@
-import { http } from "./http";
 import type { Post } from "../types/post";
 import axios from "axios";
 
