@@ -6,6 +6,7 @@ import type { AppStackParamList } from "../../navigation/RootNavigator";
 import { deletePost, fetchPosts } from "../../api/posts";
 import type { Post } from "../../types/post";
 import { useAuth } from "../../auth/AuthContext";
+import { theme } from "../../ui/theme";
 
 export function PostsAdminScreen() {
   const { role } = useAuth();
@@ -20,9 +21,9 @@ export function PostsAdminScreen() {
 
   if (role !== "admin") {
     return (
-      <View style={styles.center}>
+      <View style={[styles.screen, styles.center]}>
         <Text style={styles.title}>Acesso negado</Text>
-        <Text>Somente professores (admin) podem administrar postagens.</Text>
+        <Text style={styles.muted}>Somente professores (admin) podem administrar postagens.</Text>
       </View>
     );
   }
@@ -62,7 +63,6 @@ export function PostsAdminScreen() {
         onPress: async () => {
           try {
             await deletePost(postId);
-            // Atualiza lista local sem refetch
             setItems((prev) => prev.filter((p) => p.id !== postId));
           } catch {
             Alert.alert("Erro", "Não foi possível excluir o post.");
@@ -79,7 +79,7 @@ export function PostsAdminScreen() {
 
   if (loading) {
     return (
-      <View style={styles.center}>
+      <View style={[styles.screen, styles.center]}>
         <ActivityIndicator />
         <Text style={styles.muted}>Carregando…</Text>
       </View>
@@ -87,8 +87,9 @@ export function PostsAdminScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.screen}>
       <Text style={styles.title}>Administração de Posts</Text>
+      <Text style={styles.subtitle}>Crie, edite e exclua postagens</Text>
 
       <Pressable style={styles.primaryBtn} onPress={() => navigation.navigate("CreatePost")}>
         <Text style={styles.primaryBtnText}>Novo Post</Text>
@@ -99,6 +100,7 @@ export function PostsAdminScreen() {
         keyExtractor={(item) => item.id}
         onEndReached={loadMore}
         onEndReachedThreshold={0.4}
+        contentContainerStyle={items.length === 0 ? styles.emptyContainer : undefined}
         ListEmptyComponent={<Text style={styles.muted}>Nenhum post encontrado.</Text>}
         ListFooterComponent={loadingMore ? <ActivityIndicator style={{ marginVertical: 12 }} /> : null}
         renderItem={({ item }) => (
@@ -120,7 +122,7 @@ export function PostsAdminScreen() {
                 style={[styles.actionBtn, styles.deleteBtn]}
                 onPress={() => confirmDelete(item.id)}
               >
-                <Text style={styles.actionText}>Excluir</Text>
+                <Text style={[styles.actionText, { color: theme.colors.danger }]}>Excluir</Text>
               </Pressable>
             </View>
           </View>
@@ -131,41 +133,52 @@ export function PostsAdminScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 24 },
-  center: { flex: 1, alignItems: "center", justifyContent: "center", padding: 16 },
-  title: { fontSize: 22, fontWeight: "700", marginBottom: 12 },
-  muted: { color: "#666", marginTop: 8 },
+  screen: {
+    flex: 1,
+    backgroundColor: theme.colors.bg,
+    padding: theme.spacing.md,
+    paddingTop: theme.spacing.lg,
+  },
+  center: { alignItems: "center", justifyContent: "center" },
+
+  title: { fontSize: theme.font.h2, fontWeight: "800", color: theme.colors.text, marginBottom: 6 },
+  subtitle: { color: theme.colors.muted, marginBottom: theme.spacing.md },
+
+  muted: { color: theme.colors.muted, marginTop: 8, textAlign: "center" },
+  emptyContainer: { flexGrow: 1, alignItems: "center", justifyContent: "center" },
 
   primaryBtn: {
+    backgroundColor: theme.colors.card,
     borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 12,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    marginBottom: 12,
+    borderColor: theme.colors.border,
+    borderRadius: theme.radius.lg,
+    paddingVertical: 12,
     alignItems: "center",
+    marginBottom: theme.spacing.md,
   },
-  primaryBtnText: { fontSize: 16, fontWeight: "700" },
+  primaryBtnText: { color: theme.colors.primary, fontSize: 16, fontWeight: "800" },
 
   card: {
+    backgroundColor: theme.colors.card,
     borderWidth: 1,
-    borderColor: "#eee",
-    borderRadius: 16,
+    borderColor: theme.colors.border,
+    borderRadius: theme.radius.lg,
     padding: 14,
     marginBottom: 12,
   },
-  cardTitle: { fontSize: 16, fontWeight: "700", marginBottom: 6 },
-  cardMeta: { fontSize: 12, marginBottom: 10, color: "#666" },
+  cardTitle: { color: theme.colors.text, fontSize: 16, fontWeight: "800", marginBottom: 6 },
+  cardMeta: { color: theme.colors.muted, fontSize: 12, marginBottom: 10 },
 
   actionsRow: { flexDirection: "row", gap: 10 },
   actionBtn: {
     flex: 1,
     borderWidth: 1,
-    borderRadius: 12,
+    borderRadius: theme.radius.md,
     paddingVertical: 10,
     alignItems: "center",
+    backgroundColor: theme.colors.card2,
   },
-  editBtn: { borderColor: "#ddd" },
-  deleteBtn: { borderColor: "#c00" },
-  actionText: { fontWeight: "700" },
+  editBtn: { borderColor: theme.colors.border },
+  deleteBtn: { borderColor: theme.colors.danger },
+  actionText: { fontWeight: "800", color: theme.colors.text },
 });

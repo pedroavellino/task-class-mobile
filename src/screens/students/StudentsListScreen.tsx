@@ -5,6 +5,7 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { AppStackParamList } from "../../navigation/RootNavigator";
 import { deleteStudent, fetchStudents, type Student } from "../../api/students";
 import { useAuth } from "../../auth/AuthContext";
+import { theme } from "../../ui/theme";
 
 export function StudentsListScreen() {
   const { role } = useAuth();
@@ -19,9 +20,9 @@ export function StudentsListScreen() {
 
   if (role !== "admin") {
     return (
-      <View style={styles.center}>
+      <View style={[styles.screen, styles.center]}>
         <Text style={styles.title}>Acesso negado</Text>
-        <Text>Somente professores (admin) podem administrar alunos.</Text>
+        <Text style={styles.muted}>Somente professores (admin) podem administrar alunos.</Text>
       </View>
     );
   }
@@ -83,7 +84,7 @@ export function StudentsListScreen() {
 
   if (loading) {
     return (
-      <View style={styles.center}>
+      <View style={[styles.screen, styles.center]}>
         <ActivityIndicator />
         <Text style={styles.muted}>Carregando…</Text>
       </View>
@@ -91,8 +92,9 @@ export function StudentsListScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.screen}>
       <Text style={styles.title}>Alunos</Text>
+      <Text style={styles.subtitle}>Listar, editar e excluir alunos</Text>
 
       <FlatList
         data={items}
@@ -117,7 +119,7 @@ export function StudentsListScreen() {
                 style={[styles.actionBtn, styles.deleteBtn]}
                 onPress={() => confirmDelete(item.id, item.email)}
               >
-                <Text style={styles.actionText}>Excluir</Text>
+                <Text style={[styles.actionText, { color: theme.colors.danger }]}>Excluir</Text>
               </Pressable>
             </View>
           </View>
@@ -128,29 +130,39 @@ export function StudentsListScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 24 },
-  center: { flex: 1, alignItems: "center", justifyContent: "center", padding: 16 },
-  title: { fontSize: 22, fontWeight: "800", marginBottom: 12 },
-  muted: { color: "#666", marginTop: 8 },
+  screen: {
+    flex: 1,
+    backgroundColor: theme.colors.bg,
+    padding: theme.spacing.md,
+    paddingTop: theme.spacing.lg,
+  },
+  center: { alignItems: "center", justifyContent: "center" },
+
+  title: { fontSize: theme.font.h2, fontWeight: "800", color: theme.colors.text, marginBottom: 6 },
+  subtitle: { color: theme.colors.muted, marginBottom: theme.spacing.md },
+  muted: { color: theme.colors.muted, marginTop: 8, textAlign: "center" },
 
   card: {
+    backgroundColor: theme.colors.card,
     borderWidth: 1,
-    borderColor: "#eee",
-    borderRadius: 16,
-    padding: 14,
+    borderColor: theme.colors.border,
+    borderRadius: theme.radius.lg,
+    padding: theme.spacing.md,
     marginBottom: 12,
   },
-  cardTitle: { fontSize: 14, fontWeight: "700", marginBottom: 10 },
+  cardTitle: { fontSize: 14, fontWeight: "800", color: theme.colors.text, marginBottom: 10 },
 
   actionsRow: { flexDirection: "row", gap: 10 },
   actionBtn: {
     flex: 1,
     borderWidth: 1,
-    borderRadius: 12,
+    borderRadius: theme.radius.md,
     paddingVertical: 10,
     alignItems: "center",
+    backgroundColor: theme.colors.card2,
   },
-  editBtn: { borderColor: "#ddd" },
-  deleteBtn: { borderColor: "#c00" },
-  actionText: { fontWeight: "700" },
+  editBtn: { borderColor: theme.colors.border },
+  deleteBtn: { borderColor: theme.colors.danger },
+
+  actionText: { fontWeight: "800", color: theme.colors.text },
 });

@@ -3,6 +3,7 @@ import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { createStudent } from "../../api/students";
 import { useAuth } from "../../auth/AuthContext";
+import { theme } from "../../ui/theme";
 
 export function CreateStudentScreen() {
   const { role } = useAuth();
@@ -14,9 +15,9 @@ export function CreateStudentScreen() {
 
   if (role !== "admin") {
     return (
-      <View style={styles.center}>
+      <View style={[styles.screen, styles.center]}>
         <Text style={styles.title}>Acesso negado</Text>
-        <Text>Somente professores (admin) podem cadastrar alunos.</Text>
+        <Text style={styles.muted}>Somente professores (admin) podem cadastrar alunos.</Text>
       </View>
     );
   }
@@ -49,41 +50,76 @@ export function CreateStudentScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.screen}>
       <Text style={styles.title}>Novo Aluno</Text>
+      <Text style={styles.subtitle}>Crie um login de aluno (student)</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="E-mail"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        keyboardType="email-address"
-      />
+      <View style={styles.card}>
+        <Text style={styles.label}>E-mail</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="ex: aluno@escola.com"
+          placeholderTextColor={theme.colors.muted}
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+          keyboardType="email-address"
+        />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Senha (mín. 6)"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+        <Text style={[styles.label, { marginTop: 10 }]}>Senha</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="mínimo 6 caracteres"
+          placeholderTextColor={theme.colors.muted}
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
 
-      <Button title={loading ? "Salvando..." : "Cadastrar"} onPress={onSubmit} disabled={loading} />
+        <View style={{ marginTop: 12 }}>
+          <Button title={loading ? "Salvando..." : "Cadastrar"} onPress={onSubmit} disabled={loading} />
+        </View>
+
+        <Text style={styles.help}>
+          Dica: use credenciais simples para facilitar o teste e a demonstração no vídeo.
+        </Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 24 },
-  center: { flex: 1, alignItems: "center", justifyContent: "center", padding: 16 },
-  title: { fontSize: 22, fontWeight: "800", marginBottom: 12 },
-  input: {
+  screen: {
+    flex: 1,
+    backgroundColor: theme.colors.bg,
+    padding: theme.spacing.md,
+    paddingTop: theme.spacing.lg,
+  },
+  center: { alignItems: "center", justifyContent: "center", padding: theme.spacing.md },
+
+  title: { fontSize: theme.font.h2, fontWeight: "800", color: theme.colors.text, marginBottom: 6 },
+  subtitle: { color: theme.colors.muted, marginBottom: theme.spacing.md },
+  muted: { color: theme.colors.muted, marginTop: 8, textAlign: "center" },
+
+  card: {
+    backgroundColor: theme.colors.card,
     borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 12,
+    borderColor: theme.colors.border,
+    borderRadius: theme.radius.lg,
+    padding: 16,
+  },
+
+  label: { color: theme.colors.muted, fontWeight: "700", marginBottom: 6 },
+
+  input: {
+    backgroundColor: theme.colors.card2,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    borderRadius: theme.radius.md,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    marginBottom: 12,
+    color: theme.colors.text,
   },
+
+  help: { marginTop: 12, color: theme.colors.muted, fontSize: 12, lineHeight: 16 },
 });

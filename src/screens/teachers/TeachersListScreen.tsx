@@ -5,6 +5,7 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { AppStackParamList } from "../../navigation/RootNavigator";
 import { deleteTeacher, fetchTeachers, type Teacher } from "../../api/teachers";
 import { useAuth } from "../../auth/AuthContext";
+import { theme } from "../../ui/theme";
 
 export function TeachersListScreen() {
   const { role } = useAuth();
@@ -17,20 +18,48 @@ export function TeachersListScreen() {
   const [loadingMore, setLoadingMore] = useState(false);
   const limit = 10;
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  async function onRefresh() {
+    setRefreshing(true);
+    try {
+      await loadInitial();
+    } finally {
+      setRefreshing(false);
+    }
+  }
+
   if (role !== "admin") {
     return (
-      <View style={styles.center}>
+      <View style={[styles.screen, styles.center]}>
         <Text style={styles.title}>Acesso negado</Text>
-        <Text>Somente professores (admin) podem administrar professores.</Text>
+        <Text style={styles.muted}>Somente professores (admin) podem administrar professores.</Text>
       </View>
     );
   }
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <Button title="Novo" onPress={() => navigation.navigate("CreateTeacher")} />,
-    });
-  }, [navigation]);
+useLayoutEffect(() => {
+  navigation.setOptions({
+    headerRight: () => (
+      <Pressable
+        onPress={() => navigation.navigate("CreateTeacher")}
+        style={({ pressed }) => [
+          {
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            borderRadius: theme.radius.md,
+            backgroundColor: theme.colors.card2,
+            borderWidth: 1,
+            borderColor: theme.colors.border,
+            opacity: pressed ? 0.8 : 1,
+          },
+        ]}
+      >
+        <Text style={{ color: theme.colors.text, fontWeight: "800" }}>Novo</Text>
+      </Pressable>
+    ),
+  });
+}, [navigation]);
 
   async function loadInitial() {
     setLoading(true);
@@ -83,7 +112,7 @@ export function TeachersListScreen() {
 
   if (loading) {
     return (
-      <View style={styles.center}>
+      <View style={[styles.screen, styles.center]}>
         <ActivityIndicator />
         <Text style={styles.muted}>Carregando…</Text>
       </View>
@@ -91,16 +120,20 @@ export function TeachersListScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.screen}>
       <Text style={styles.title}>Professores</Text>
+      <Text style={styles.subtitle}>Listar, editar e excluir professores</Text>
 
       <FlatList
         data={items}
         keyExtractor={(item) => item.id}
         onEndReached={loadMore}
         onEndReachedThreshold={0.4}
+        contentContainerStyle={items.length === 0 ? styles.emptyContainer : undefined}
         ListEmptyComponent={<Text style={styles.muted}>Nenhum professor encontrado.</Text>}
         ListFooterComponent={loadingMore ? <ActivityIndicator style={{ marginVertical: 12 }} /> : null}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
         renderItem={({ item }) => (
           <View style={styles.card}>
             <Text style={styles.cardTitle}>{item.email}</Text>
@@ -117,7 +150,7 @@ export function TeachersListScreen() {
                 style={[styles.actionBtn, styles.deleteBtn]}
                 onPress={() => confirmDelete(item.id, item.email)}
               >
-                <Text style={styles.actionText}>Excluir</Text>
+                <Text style={styles.deleteText}>Excluir</Text>
               </Pressable>
             </View>
           </View>
@@ -128,29 +161,41 @@ export function TeachersListScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 24 },
-  center: { flex: 1, alignItems: "center", justifyContent: "center", padding: 16 },
-  title: { fontSize: 22, fontWeight: "800", marginBottom: 12 },
-  muted: { color: "#666", marginTop: 8 },
+  screen: {
+    flex: 1,
+    backgroundColor: theme.colors.bg,
+    padding: theme.spacing.md,
+    paddingTop: theme.spacing.lg,
+  },
+  center: { alignItems: "center", justifyContent: "center", padding: theme.spacing.md },
+
+  title: { fontSize: theme.font.h2, fontWeight: "800", color: theme.colors.text, marginBottom: 6 },
+  subtitle: { color: theme.colors.muted, marginBottom: theme.spacing.md },
+
+  muted: { color: theme.colors.muted, marginTop: 8, textAlign: "center" },
+  emptyContainer: { flexGrow: 1, alignItems: "center", justifyContent: "center" },
 
   card: {
+    backgroundColor: theme.colors.card,
     borderWidth: 1,
-    borderColor: "#eee",
-    borderRadius: 16,
+    borderColor: theme.colors.border,
+    borderRadius: theme.radius.lg,
     padding: 14,
     marginBottom: 12,
   },
-  cardTitle: { fontSize: 14, fontWeight: "700", marginBottom: 10 },
+  cardTitle: { color: theme.colors.text, fontSize: 14, fontWeight: "800", marginBottom: 10 },
 
   actionsRow: { flexDirection: "row", gap: 10 },
   actionBtn: {
     flex: 1,
     borderWidth: 1,
-    borderRadius: 12,
+    borderRadius: theme.radius.md,
     paddingVertical: 10,
     alignItems: "center",
+    backgroundColor: theme.colors.card2,
   },
-  editBtn: { borderColor: "#ddd" },
-  deleteBtn: { borderColor: "#c00" },
-  actionText: { fontWeight: "700" },
+  editBtn: { borderColor: theme.colors.border },
+  deleteBtn: { borderColor: theme.colors.danger },
+  deleteText: { fontWeight: "800", color: theme.colors.danger },
+  actionText: { fontWeight: "800", color: theme.colors.text },
 });
