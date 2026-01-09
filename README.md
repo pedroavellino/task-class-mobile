@@ -133,7 +133,7 @@ senha: 123456
 email: aluno@taskclass.com
 senha: 123456
 
-# onsiderações Finais
+# Considerações Finais
 
 Este projeto consolidou conhecimentos de:
 
