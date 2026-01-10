@@ -39,6 +39,7 @@ export function LoginScreen() {
           keyboardType="email-address"
           placeholder="E-mail"
           placeholderTextColor={theme.colors.muted}
+          selectionColor={theme.colors.primary}
           style={styles.input}
         />
 
@@ -48,6 +49,7 @@ export function LoginScreen() {
           secureTextEntry
           placeholder="Senha"
           placeholderTextColor={theme.colors.muted}
+          selectionColor={theme.colors.primary}
           style={styles.input}
         />
 

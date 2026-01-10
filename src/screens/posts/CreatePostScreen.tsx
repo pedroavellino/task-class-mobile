@@ -56,6 +56,7 @@ export function CreatePostScreen() {
         <Text style={styles.label}>Título</Text>
         <TextInput
           style={styles.input}
+          selectionColor={theme.colors.primary}
           placeholder="Ex.: Atividade de Matemática"
           placeholderTextColor={theme.colors.muted}
           value={titulo}
@@ -65,6 +66,7 @@ export function CreatePostScreen() {
         <Text style={[styles.label, { marginTop: 10 }]}>Conteúdo</Text>
         <TextInput
           style={[styles.input, styles.multiline]}
+          selectionColor={theme.colors.primary}
           placeholder="Descreva a atividade..."
           placeholderTextColor={theme.colors.muted}
           value={conteudo}
@@ -75,6 +77,7 @@ export function CreatePostScreen() {
         <Text style={[styles.label, { marginTop: 10 }]}>Autor</Text>
         <TextInput
           style={styles.input}
+          selectionColor={theme.colors.primary}
           placeholder="Ex.: Professor Pedro"
           placeholderTextColor={theme.colors.muted}
           value={autor}

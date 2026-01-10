@@ -3,6 +3,7 @@ export const theme = {
     bg: "#0B1220",
     card: "#111B2E",
     card2: "#0F1A2D",
+    inputBg: "#0F1A2D", 
     border: "#1F2A44",
     text: "#EAF0FF",
     muted: "#9AA4B2",
